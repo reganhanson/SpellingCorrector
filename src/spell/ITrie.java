@@ -46,7 +46,6 @@ public interface ITrie {
 	 * <word>\n
 	 * MUST BE RECURSIVE.
 	 */
-	@Override
 	String toString();
 
 	/**
@@ -54,7 +53,6 @@ public interface ITrie {
 	 * MUST be constant time.
 	 * @return a uniform, deterministic identifier for this trie.
 	 */
-	@Override
 	int hashCode();
 
 	/**
@@ -64,6 +62,5 @@ public interface ITrie {
 	 * @return true if o is a Trie with same structure and node count for each node
 	 * 		   false otherwise
 	 */
-	@Override
 	boolean equals(Object o);
 }
