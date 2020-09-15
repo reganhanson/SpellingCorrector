@@ -6,7 +6,7 @@ import javax.print.DocFlavor;
 import java.util.Dictionary;
 
 public class Trie implements ITrie {
-    private Node root;
+    private final Node root;
     private int wordCount;
     private int nodeCount;
     private boolean stay = true;
@@ -48,9 +48,9 @@ public class Trie implements ITrie {
         // We always want to start at the root node
         Node currentNode = root;
         // If the root is null, the trie hasnt been created...
-        if (currentNode == null) {
+        /*if (currentNode == null) {
             return null;
-        }
+        }*/
         //if the next letter is there move down in the trie and look for the next letter
         for (int i = 0; i < word.length(); i++) {
             if (currentNode.children[word.charAt(i) - 'a'] == null) {
@@ -81,12 +81,11 @@ public class Trie implements ITrie {
     @Override
     public String toString() {
         // traverse through all the words in the trie
-        Node currentNode = root;
 
         StringBuilder word = new StringBuilder();
         StringBuilder printWord = new StringBuilder();
 
-        toStringHelper(currentNode, word, printWord);
+        toStringHelper(root, word, printWord);
 
 
         return printWord.toString();
@@ -94,7 +93,7 @@ public class Trie implements ITrie {
 
     @Override
     public int hashCode() {
-        return 633;
+        return ((31 * nodeCount) + wordCount);
     }
 
     @Override
@@ -113,9 +112,8 @@ public class Trie implements ITrie {
             return false;
         }
         // if none of these are false, then recursively search the trees for similarities.
-        Node currentNode = this.root;
         Node compareNode = ((Trie) o).root;
-        equalsHelper(currentNode, compareNode);
+        equalsHelper(this.root, compareNode);
         return stay;
     }
 
