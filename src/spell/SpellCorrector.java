@@ -11,7 +11,8 @@ import java.util.TreeSet;
 public class SpellCorrector implements ISpellCorrector {
     public Trie myDictionary;
     // private Set<String> possibleWords = new
-    public Set<String> candidateWords = new TreeSet<String>();
+    public Set<String> candidateWords = new TreeSet<>();
+    public Set<String> validWords = new TreeSet<>();
 
     public SpellCorrector() {
         myDictionary = new Trie();
@@ -32,18 +33,44 @@ public class SpellCorrector implements ISpellCorrector {
             return inputWord.toLowerCase();
         }
         else {
-            return null;
+            // try making some candidate words (1st level)
+            makeCandidateWords(inputWord, candidateWords);
+            return searchCandidateWords();
+
         }
     }
 
     public void makeCandidateWords(String inputWord, Set<String> candidateWords) {
-        /*addDeletionEdit(inputWord);
-        addTranspositionEdit(inputWord);
-        addAlterationEdit(inputWord);
-        addInsertionEdit(inputWord);*/
+        addDeletionEdit(inputWord, candidateWords);
+        addTranspositionEdit(inputWord, candidateWords);
+        addAlterationEdit(inputWord, candidateWords);
+        addInsertionEdit(inputWord, candidateWords);
     }
 
     public String searchCandidateWords() {
+        Iterator<String> itr = candidateWords.iterator();
+        String foundWord;
+
+        while(itr.hasNext()) {
+            System.out.println(itr.next());
+            foundWord = itr.next();
+            if (myDictionary.find(foundWord) != null) {
+                //validWords.add(foundWord);
+                return foundWord;
+            }
+        }
+
+        /* while (validItr.hasNext()) {
+            possibleWord = itr.next();
+            frequencyCount = myDictionary.find(possibleWord).getValue();
+            if(frequencyCount > currentFrequencyCount) {
+                validWord = possibleWord;
+                currentFrequencyCount = frequencyCount;
+            }
+        }
+        return validWord;
+
+         */
         return null;
     }
 
