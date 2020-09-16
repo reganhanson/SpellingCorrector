@@ -10,6 +10,7 @@ public class Trie implements ITrie {
     private int wordCount;
     private int nodeCount;
     private boolean stay = true;
+    private int codeNumber = 0;
 
     public Trie() {
         root = new Node();
@@ -93,7 +94,25 @@ public class Trie implements ITrie {
 
     @Override
     public int hashCode() {
-        return ((31 * nodeCount) + wordCount);
+        recursiveHash(root);
+        //codeNumber = codeNumber - nodeCount;
+        int codeNumber2 = 0;
+        codeNumber2 = codeNumber;
+        codeNumber2 = codeNumber - (2 * wordCount);
+        codeNumber = 0;
+        return codeNumber2;
+    }
+
+    private void recursiveHash(Node currentNode) {
+        for (int i = 0; i < 26; i++) {
+            if (currentNode.children[i] != null) {
+                if (currentNode == root) {
+                    codeNumber = codeNumber + (17 * i);
+                }
+                codeNumber = codeNumber + (31 * i);
+                recursiveHash(currentNode.children[i]);
+            }
+        }
     }
 
     @Override
