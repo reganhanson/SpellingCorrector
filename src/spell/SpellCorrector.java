@@ -1,44 +1,93 @@
 package spell;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.print.DocFlavor;
+import java.io.*;
 import java.nio.file.Files;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class SpellCorrector implements ISpellCorrector{
+public class SpellCorrector implements ISpellCorrector {
+    public Trie myDictionary;
+    // private Set<String> possibleWords = new
+    public Set<String> candidateWords = new TreeSet<String>();
+
+    public SpellCorrector() {
+        myDictionary = new Trie();
+    }
 
     @Override
     public void useDictionary(String dictionaryFileName) throws IOException {
-        // Make the dictionary/trie object
-        Trie Dictionary = new Trie();
-        String word = "";
-        // Open file used for dictionary
-        //InputStream in = Files.newInputStream(Paths.get());
-        BufferedReader readFile = new BufferedReader(new FileReader(dictionaryFileName));
-        String currentLine = readFile.readLine();
-        while (currentLine != null) {
-            for (int i = 0; i < currentLine.length(); i++) {
-                if (currentLine.charAt(i) == ' ') {
-                    //word is over
-                    //System.out.print(word);
-                    Dictionary.add(word);
-                    word = "";
-                } else {
-                    word = word + currentLine.charAt(i);
-                }
-            }
-            currentLine = readFile.readLine();
+        File txtFile = new File(dictionaryFileName);    // will give pointer to file object
+        Scanner scanFile = new Scanner(txtFile);        // Send the txt file to the scanner file
+        while (scanFile.hasNext()) {                    // scans until end of file
+            myDictionary.add(scanFile.next());          // send the scanned word (goes until white space) to the dictionary
         }
-
-        // parse the words from the txt file and add them
-        // to the dictionary via the Trie add method
-        // until there are no more words in the text file.
-
     }
 
     @Override
     public String suggestSimilarWord(String inputWord) {
+        if (myDictionary.find(inputWord.toLowerCase()) != null) {
+            return inputWord.toLowerCase();
+        }
+        else {
+            return null;
+        }
+    }
+
+    public void makeCandidateWords(String inputWord, Set<String> candidateWords) {
+        /*addDeletionEdit(inputWord);
+        addTranspositionEdit(inputWord);
+        addAlterationEdit(inputWord);
+        addInsertionEdit(inputWord);*/
+    }
+
+    public String searchCandidateWords() {
         return null;
     }
+
+    public void addDeletionEdit(String inputWord, Set<String> addWords) {
+        for (int i = 0; i < inputWord.length(); i++) {
+            StringBuilder word = new StringBuilder(inputWord);
+            addWords.add(word.deleteCharAt(i).toString());
+        }
+    }
+
+    public void addTranspositionEdit(String inputWord, Set<String> addWords) {
+        for (int i = 0; i < inputWord.length() - 1; i++) {
+            StringBuilder word = new StringBuilder(inputWord);
+            char first = inputWord.charAt(i);
+            char second = inputWord.charAt(i+1);
+            word.setCharAt(i, second);
+            word.setCharAt((i+1), first);
+            addWords.add(word.toString());
+        }
+    }
+
+    public void addInsertionEdit(String inputWord, Set<String> addWords) {
+        char a;
+        for (int i = 0; i < inputWord.length() + 1; i++) {
+            for (int j = 97; j < 123; j++) {
+                StringBuilder word = new StringBuilder(inputWord);
+                a = (char)j;
+                word.insert(i, a);
+                addWords.add(word.toString());
+            }
+        }
+    }
+
+    public void addAlterationEdit(String inputWord, Set<String> addWords) {
+        char a;
+        for (int i = 0; i < inputWord.length(); i++) {
+            StringBuilder word = new StringBuilder(inputWord);
+            for (int j = 97; j < 123; j++) {
+                a = (char)j;
+                word.setCharAt(i, a);
+                addWords.add(word.toString());
+
+            }
+        }
+    }
+
 }

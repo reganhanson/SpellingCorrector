@@ -45,26 +45,46 @@ public class Trie implements ITrie {
 
     @Override
     public INode find(String word) {
-        word = word.toLowerCase();
+        /*word = word.toLowerCase();
         // We always want to start at the root node
         Node currentNode = root;
         // If the root is null, the trie hasnt been created...
         /*if (currentNode == null) {
             return null;
-        }*/
+        }
         //if the next letter is there move down in the trie and look for the next letter
         for (int i = 0; i < word.length(); i++) {
-            if (currentNode.children[word.charAt(i) - 'a'] == null) {
+            if (currentNode.children[(int) (word.charAt(i) - 'a')] == null) {
                 return null;
             } else {
-                currentNode = currentNode.children[word.charAt(i) - 'a'];
+                currentNode = currentNode.children[(int) (word.charAt(i) - 'a')];
             }
         }
         // If it hasn't returned null already, then either the word is there
         // I.e. current node value is 1 or greater
-        // or that word isn't there but a word continuing from there is
+        // or that word isn't there but a word continuing from there is'
+        //return currentNode;
         if (currentNode != null && currentNode.getValue() >= 1) {
             return currentNode;
+        }
+        return null;*/
+        Node currentNode = root;
+        if (word == null) {
+            return null;
+        }
+        for (int i = 0; i < word.length(); i++) {
+            if (currentNode.children[(int) (word.charAt(i) - 'a')] == null) {
+                return null;
+            }
+            else {
+                currentNode = currentNode.children[(int) (word.charAt(i) - 'a')];
+            }
+        }
+        if (currentNode != null && currentNode.getValue() > 0) {
+            return currentNode;
+        }
+        else {
+            //return null;
         }
         return null;
     }
@@ -136,7 +156,7 @@ public class Trie implements ITrie {
         return stay;
     }
 
-    public void equalsHelper(Node currentNode, Node compareNode) {
+    private void equalsHelper(Node currentNode, Node compareNode) {
         if (stay) {
             if (currentNode.getValue() != compareNode.getValue()) {
                 stay = false;
@@ -157,7 +177,7 @@ public class Trie implements ITrie {
         }
     }
 
-    public void toStringHelper(Node currentNode, StringBuilder word, StringBuilder printWord) {
+    private void toStringHelper(Node currentNode, StringBuilder word, StringBuilder printWord) {
         char letter;
         if (currentNode == null) {
             return;
