@@ -73,19 +73,17 @@ public class Trie implements ITrie {
             return null;
         }
         for (int i = 0; i < word.length(); i++) {
-            if (currentNode.children[(int) (word.charAt(i) - 'a')] == null) {
+            if (currentNode.children[word.charAt(i) - 'a'] == null) {
                 return null;
             }
             else {
-                currentNode = currentNode.children[(int) (word.charAt(i) - 'a')];
+                currentNode = currentNode.children[word.charAt(i) - 'a'];
             }
         }
         if (currentNode != null && currentNode.getValue() > 0) {
             return currentNode;
         }
-        else {
-            //return null;
-        }
+
         return null;
     }
 
@@ -116,9 +114,8 @@ public class Trie implements ITrie {
     public int hashCode() {
         recursiveHash(root);
         //codeNumber = codeNumber - nodeCount;
-        int codeNumber2 = 0;
-        codeNumber2 = codeNumber;
-        codeNumber2 = codeNumber - (2 * wordCount);
+        int codeNumber2;
+        codeNumber2 = codeNumber - (2 * wordCount) + nodeCount;
         codeNumber = 0;
         return codeNumber2;
     }
@@ -130,7 +127,7 @@ public class Trie implements ITrie {
                     codeNumber = codeNumber + (17 * i);
                 }
                 codeNumber = codeNumber + (31 * i);
-                recursiveHash(currentNode.children[i]);
+                //recursiveHash(currentNode.children[i]);
             }
         }
     }
@@ -183,7 +180,8 @@ public class Trie implements ITrie {
             return;
         }
         if (currentNode.getValue() > 0) {
-            printWord.append(word + "\n");
+            printWord.append(word);
+                    printWord.append("\n");
         }
 
         for (int i = 0; i < 26; i++) {
