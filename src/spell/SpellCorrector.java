@@ -49,19 +49,20 @@ public class SpellCorrector implements ISpellCorrector {
 
     public String searchCandidateWords() {
         Iterator<String> itr = candidateWords.iterator();
-        String foundWord;
+        String foundWord, validWord= "";
+        int frequencyCount, currentFrequencyCount = 0;
 
         while(itr.hasNext()) {
-            System.out.println(itr.next());
+            //System.out.println(itr.next());
             foundWord = itr.next();
             if (myDictionary.find(foundWord) != null) {
-                //validWords.add(foundWord);
-                return foundWord;
+                validWords.add(foundWord);
+                //return foundWord;
             }
         }
+        Iterator<String> validItr = validWords.iterator();
 
-        /* while (validItr.hasNext()) {
-            possibleWord = itr.next();
+        for (String possibleWord : validWords) {
             frequencyCount = myDictionary.find(possibleWord).getValue();
             if(frequencyCount > currentFrequencyCount) {
                 validWord = possibleWord;
@@ -69,9 +70,6 @@ public class SpellCorrector implements ISpellCorrector {
             }
         }
         return validWord;
-
-         */
-        return null;
     }
 
     public void addDeletionEdit(String inputWord, Set<String> addWords) {
