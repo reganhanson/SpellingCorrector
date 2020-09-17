@@ -12,7 +12,8 @@ public class SpellCorrector implements ISpellCorrector {
     public Trie myDictionary;
     // private Set<String> possibleWords = new
     public Set<String> candidateWords = new TreeSet<>();
-    public Set<String> validWords = new TreeSet<>();
+    //public Set<String> validWords = new TreeSet<>();
+    public Set<String> secondStringWords = new TreeSet<>();
 
     public SpellCorrector() {
         myDictionary = new Trie();
@@ -29,14 +30,28 @@ public class SpellCorrector implements ISpellCorrector {
 
     @Override
     public String suggestSimilarWord(String inputWord) {
+        candidateWords.clear();
+        secondStringWords.clear();
+
         if (myDictionary.find(inputWord.toLowerCase()) != null) {
             return inputWord.toLowerCase();
         }
         else {
             // try making some candidate words (1st level)
             makeCandidateWords(inputWord, candidateWords);
-            return searchCandidateWords();
-
+            if (searchCandidateWords(candidateWords) == null) {
+                //2nd level
+                for(String s : candidateWords) {
+                    makeCandidateWords(s, secondStringWords);
+                }
+                if (!searchCandidateWords(secondStringWords).equals("")) {
+                    return searchCandidateWords(secondStringWords);
+                }
+            }
+            if (!searchCandidateWords(candidateWords).equals("")) {
+                return searchCandidateWords(candidateWords);
+            }
+            return null;
         }
     }
 
@@ -47,17 +62,17 @@ public class SpellCorrector implements ISpellCorrector {
         addInsertionEdit(inputWord, candidateWords);
     }
 
-    public String searchCandidateWords() {
+    public String searchCandidateWords(Set<String> candidateWords) {
         Iterator<String> itr = candidateWords.iterator();
         String foundWord, validWord= "";
+        Set<String> validWords = new TreeSet<>();
+
         int frequencyCount, currentFrequencyCount = 0;
 
         while(itr.hasNext()) {
-            //System.out.println(itr.next());
             foundWord = itr.next();
             if (myDictionary.find(foundWord) != null) {
                 validWords.add(foundWord);
-                //return foundWord;
             }
         }
         Iterator<String> validItr = validWords.iterator();
