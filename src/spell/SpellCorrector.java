@@ -44,14 +44,11 @@ public class SpellCorrector implements ISpellCorrector {
                 for(String s : candidateWords) {
                     makeCandidateWords(s, secondStringWords);
                 }
-                if (!searchCandidateWords(secondStringWords).equals("")) {
-                    return searchCandidateWords(secondStringWords);
-                }
+                searchCandidateWords(secondStringWords);
+                return searchCandidateWords(secondStringWords);
             }
-            if (!searchCandidateWords(candidateWords).equals("")) {
-                return searchCandidateWords(candidateWords);
-            }
-            return null;
+            searchCandidateWords(candidateWords);
+            return searchCandidateWords(candidateWords);
         }
     }
 
@@ -64,7 +61,7 @@ public class SpellCorrector implements ISpellCorrector {
 
     public String searchCandidateWords(Set<String> candidateWords) {
         Iterator<String> itr = candidateWords.iterator();
-        String foundWord, validWord= "";
+        String foundWord, validWord= null;
         Set<String> validWords = new TreeSet<>();
 
         int frequencyCount, currentFrequencyCount = 0;
@@ -83,6 +80,9 @@ public class SpellCorrector implements ISpellCorrector {
                 validWord = possibleWord;
                 currentFrequencyCount = frequencyCount;
             }
+        }
+        if (validWords.isEmpty()) {
+            return null;
         }
         return validWord;
     }
