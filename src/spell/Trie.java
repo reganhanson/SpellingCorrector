@@ -1,10 +1,5 @@
 package spell;
 
-import com.sun.source.tree.InstanceOfTree;
-
-import javax.print.DocFlavor;
-import java.util.Dictionary;
-
 public class Trie implements ITrie {
     private final Node root;
     private int wordCount;
@@ -48,7 +43,7 @@ public class Trie implements ITrie {
         /*word = word.toLowerCase();
         // We always want to start at the root node
         Node currentNode = root;
-        // If the root is null, the trie hasnt been created...
+        // If the root is null, the trie hasn't been created...
         /*if (currentNode == null) {
             return null;
         }
