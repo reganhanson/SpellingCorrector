@@ -1,8 +1,6 @@
 package spell;
 
-import javax.print.DocFlavor;
 import java.io.*;
-import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
@@ -72,7 +70,7 @@ public class SpellCorrector implements ISpellCorrector {
                 validWords.add(foundWord);
             }
         }
-        Iterator<String> validItr = validWords.iterator();
+        // Iterator<String> validItr = validWords.iterator();
 
         for (String possibleWord : validWords) {
             frequencyCount = myDictionary.find(possibleWord).getValue();
