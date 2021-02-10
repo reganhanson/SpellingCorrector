@@ -42,10 +42,8 @@ public class SpellCorrector implements ISpellCorrector {
                 for(String s : candidateWords) {
                     makeCandidateWords(s, secondStringWords);
                 }
-                searchCandidateWords(secondStringWords);
                 return searchCandidateWords(secondStringWords);
             }
-            searchCandidateWords(candidateWords);
             return searchCandidateWords(candidateWords);
         }
     }
